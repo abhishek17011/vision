@@ -1,9 +1,20 @@
 import os
 import uuid
 
-import cv2
-import numpy as np
 import streamlit as st
+
+try:
+    import cv2
+except ModuleNotFoundError:
+    st.error(
+        "OpenCV is not installed in this environment (missing dependency: 'cv2').\n\n"
+        "Install it with:\n"
+        "  pip install opencv-python\n\n"
+        "Then restart the app."
+    )
+    st.stop()
+
+import numpy as np
 
 
 def process_image_bgr(image_bgr: np.ndarray):
