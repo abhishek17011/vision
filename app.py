@@ -73,8 +73,11 @@ def process_image_bgr(image_bgr: np.ndarray):
     valid_lane_count = 0
 
     if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
+        # OpenCV may return lines as either (N, 1, 4) or (N, 4), depending on
+        # the build. Normalize both forms before unpacking coordinates.
+        line_segments = np.asarray(lines).reshape(-1, 4)
+        for x1, y1, x2, y2 in line_segments:
+            x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
             slope = 0
             if (x2 - x1) != 0:
                 slope = (y2 - y1) / (x2 - x1)
